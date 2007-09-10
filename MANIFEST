@@ -1,0 +1,14 @@
+t/format.t
+t/add.t
+t/count.t
+t/div.t
+t/runtests
+t/mult.t
+t/sub.t
+t/test.pl
+t/lsp.t
+t/simplify.t
+README
+SigFigs.pm
+Makefile.PL
+MANIFEST
