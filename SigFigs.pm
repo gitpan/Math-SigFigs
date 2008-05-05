@@ -1,75 +1,40 @@
 package Math::SigFigs;
 
-# Copyright (c) 1995-2007 Sullivan Beck. All rights reserved.
+# Copyright (c) 1995-2008 Sullivan Beck. All rights reserved.
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
-
-########################################################################
-# HISTORY
-########################################################################
-
-# Written by:
-#    Sullivan Beck (sbeck@cpan.org)
-# Any suggestions, bug reports, or donations :-) should be sent to me.
-
-# Version 1.00  1996-12-05
-#    Initial creation
-#
-# Version 1.01  1997-01-28
-#    Used croak and changed die's to confess.
-#    "101" is now returned as "101." .
-#    Fixed where 9.99 wasn't being correctly returned with 1 sigfig.
-#       Kyle Krom <kromk@pt.Cyanamid.COM>
-#
-# Version 1.02  2000-01-10
-#    Fixed where 1249.01 wasn't correctly rounded to 1200.
-#       Janna Wemekamp <jwemekam@erin.gov.au>
-#
-# Version 1.03  2003-09-11
-#    Fixed a bug where I left off the sign.  Steve Reaser
-#       <steve_reaser@webassign.net>
-#    Fixed a bug in subSF where numbers ending in zero were truncated.
-#       Andrew Grall <AGrall@dcds.edu>
-#
-# Version 1.04  2005-06-30
-#    Complete rewrite of addSF.
-#      - stopped using sprintf (which does not return the same results on
-#        all platforms.
-#      - replaced IsReal with Simplify.
-#
-# Version 1.05  2007-02-22
-#    Fixed a bug where subSF didn't work with some values.
 
 ########################################################################
 
 require 5.000;
 require Exporter;
 use Carp;
+use warnings;
 @ISA = qw(Exporter);
-@EXPORT = qw(FormatSigFigs
-             CountSigFigs
-);
-@EXPORT_STD   = qw(FormatSigFigs CountSigFigs addSF subSF multSF divSF
-                   VERSION);
-@EXPORT_DEBUG = qw(LSP Simplify);
-@EXPORT_OK = (@EXPORT_STD, @EXPORT_DEBUG);
+@EXPORT     = qw(FormatSigFigs
+                 CountSigFigs
+                );
+@EXPORT_OK  = qw(FormatSigFigs
+                 CountSigFigs
+                 addSF subSF multSF divSF
+                 VERSION);
 
-%EXPORT_TAGS = (all => \@EXPORT_STD, debug => \@EXPORT_DEBUG);
+%EXPORT_TAGS = (all => \@EXPORT_OK);
 
-$VERSION = 1.05;
+$VERSION = 1.06;
 
 use strict;
 
 sub addSF {
   my($n1,$n2)=@_;
-  $n1 = Simplify($n1);
-  $n2 = Simplify($n2);
+  $n1 = _Simplify($n1);
+  $n2 = _Simplify($n2);
   return ()  if (! defined $n1  ||  ! defined $n2);
   return $n2 if ($n1==0);
   return $n1 if ($n2==0);
 
-  my $m1 = LSP($n1);
-  my $m2 = LSP($n2);
+  my $m1 = _LSP($n1);
+  my $m2 = _LSP($n2);
   my $m  = ($m1>$m2 ? $m1 : $m2);
 
   my($n) = $n1+$n2;
@@ -120,7 +85,7 @@ sub addSF {
 
 sub subSF {
   my($n1,$n2)=@_;
-  $n2 = Simplify($n2);
+  $n2 = _Simplify($n2);
   if ($n2<0) {
     $n2 =~ s/\-//;
   } else {
@@ -131,8 +96,8 @@ sub subSF {
 
 sub multSF {
   my($n1,$n2)=@_;
-  $n1 = Simplify($n1);
-  $n2 = Simplify($n2);
+  $n1 = _Simplify($n1);
+  $n2 = _Simplify($n2);
   return ()  if (! defined $n1  ||  ! defined $n2);
   return 0   if ($n1==0  or  $n2==0);
   my($m1)=CountSigFigs($n1);
@@ -144,8 +109,8 @@ sub multSF {
 
 sub divSF {
   my($n1,$n2)=@_;
-  $n1 = Simplify($n1);
-  $n2 = Simplify($n2);
+  $n1 = _Simplify($n1);
+  $n2 = _Simplify($n2);
   return ()  if (! defined $n1  ||  ! defined $n2);
   return 0   if ($n1==0);
   return ()  if ($n2==0);
@@ -159,7 +124,7 @@ sub divSF {
 sub FormatSigFigs {
   my($N,$n)=@_;
   my($ret);
-  $N = Simplify($N);
+  $N = _Simplify($N);
   return ""  if (! defined($N)  or  $n !~ /^\d+$/  or  $n<1);
   my($l,$l1,$l2,$m,$s)=();
   $N=~ s/\s+//g;               # Remove all spaces
@@ -262,7 +227,7 @@ sub FormatSigFigs {
 
 sub CountSigFigs {
   my($N)=@_;
-  $N = Simplify($N);
+  $N = _Simplify($N);
   return ()  if (! defined($N));
   return 0   if ($N==0);
 
@@ -288,7 +253,7 @@ sub CountSigFigs {
 ########################################################################
 
 # This returns the power of the least sigificant digit.
-sub LSP {
+sub _LSP {
   my($n) = @_;
   $n =~ s/\-//;
   if ($n =~ /(.*)\.(.+)/) {
@@ -302,7 +267,7 @@ sub LSP {
 
 # This prepares a number by converting it to it's simplest correct
 # form.
-sub Simplify {
+sub _Simplify {
   my($n)    = @_;
   return undef  if (! defined $n);
   return undef  if ($n !~ /^\s*([+-]?)\s*0*(\d+\.?\d*)\s*$/  and
@@ -347,11 +312,12 @@ Use the following routines to do arithmetic operations.
 
 =head1 DESCRIPTION
 
-In many scientific applications, it is often useful to be able to format
-numbers with a given number of significant figures, or to do math in
-such a way as to maintain the correct number of significant figures.
-The rules for significant figures are too complicated to be handled solely
-using the sprintf function (unless you happen to be Randal Schwartz :-).
+In many scientific applications, it is useful (and in some cases required)
+to be able to format numbers with a given number of significant figures,
+or to do math in such a way as to maintain the correct number of
+significant figures.  The rules for significant figures are too
+complicated to be handled solely using the sprintf function (unless you
+happen to be Randal Schwartz :-).
 
 These routines allow you to correctly handle significan figures.
 
@@ -431,6 +397,11 @@ notation.
 
 =back
 
+=head1 LICENSE
+
+This script is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
 =head1 AUTHOR
 
 Sullivan Beck (sbeck@cpan.org)
@@ -439,6 +410,12 @@ Sullivan Beck (sbeck@cpan.org)
 
 1;
 # Local Variables:
+# mode: cperl
 # indent-tabs-mode: nil
+# cperl-indent-level: 3
+# cperl-continued-statement-offset: 2
+# cperl-continued-brace-offset: 0
+# cperl-brace-offset: 0
+# cperl-brace-imaginary-offset: 0
+# cperl-label-offset: -2
 # End:
-

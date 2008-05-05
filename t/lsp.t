@@ -1,6 +1,6 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 
-use Math::SigFigs qw(:debug);
+use Math::SigFigs;
 $runtests=shift(@ARGV);
 if ( -f "t/test.pl" ) {
   require "t/test.pl";
@@ -11,7 +11,6 @@ if ( -f "t/test.pl" ) {
 }
 
 print "LSP...\n";
-print "1..6\n"  if (! $runtests);
 
 $tests="
 
@@ -35,7 +34,18 @@ $tests="
 
 ";
 
-&test_Func(\&LSP,$tests,$runtests);
+test_Func(\&Math::SigFigs::_LSP,$tests,$runtests);
 
 1;
+
+# Local Variables:
+# mode: cperl
+# indent-tabs-mode: nil
+# cperl-indent-level: 3
+# cperl-continued-statement-offset: 2
+# cperl-continued-brace-offset: 0
+# cperl-brace-offset: 0
+# cperl-brace-imaginary-offset: 0
+# cperl-label-offset: -2
+# End:
 

@@ -21,11 +21,12 @@ SYNOPSIS
       $num=divSF($n1,$n2);
 
 DESCRIPTION
-    In many scientific applications, it is often useful to be able to format
-    numbers with a given number of significant figures, or to do math in
-    such a way as to maintain the correct number of significant figures. The
-    rules for significant figures are too complicated to be handled solely
-    using the sprintf function (unless you happen to be Randal Schwartz :-).
+    In many scientific applications, it is useful (and in some cases
+    required) to be able to format numbers with a given number of
+    significant figures, or to do math in such a way as to maintain the
+    correct number of significant figures. The rules for significant figures
+    are too complicated to be handled solely using the sprintf function
+    (unless you happen to be Randal Schwartz :-).
 
     These routines allow you to correctly handle significan figures.
 

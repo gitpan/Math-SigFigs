@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl -w
+#!/usr/bin/perl -w
 
 use Math::SigFigs;
 $runtests=shift(@ARGV);
@@ -11,8 +11,6 @@ if ( -f "t/test.pl" ) {
 }
 
 print "FormatSigFigs...\n";
-print "1..143\n"  if (! $runtests);
-
 
 $tests="
 
@@ -636,6 +634,17 @@ $tests="
 
 ";
 
-&test_Func(\&FormatSigFigs,$tests,$runtests);
+test_Func(\&FormatSigFigs,$tests,$runtests);
 
 1;
+# Local Variables:
+# mode: cperl
+# indent-tabs-mode: nil
+# cperl-indent-level: 3
+# cperl-continued-statement-offset: 2
+# cperl-continued-brace-offset: 0
+# cperl-brace-offset: 0
+# cperl-brace-imaginary-offset: 0
+# cperl-label-offset: -2
+# End:
+
