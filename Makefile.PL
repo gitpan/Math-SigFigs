@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
 	NAME             => 'Math::SigFigs',
-	VERSION_FROM     => 'SigFigs.pm',
+	VERSION	         => '1.07',
 	($] >= 5.005
 	? (ABSTRACT=>'do math with correct handling of significant figures',
 	   AUTHOR  =>'Sullivan Beck (sbeck@cpan.org)')

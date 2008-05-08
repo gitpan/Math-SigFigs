@@ -3,7 +3,7 @@ use Module::Build;
 
 my $build = Module::Build->new(
 	license            => 'perl',
-	dist_version       => '1.06',
+	dist_version       => '1.07',
 	dist_author        => 'Sullivan Beck <sbeck@cpan.org>',
 	module_name        => 'Math::SigFigs',
 	dist_abstract      => 'do math with correct handling of significant figures',

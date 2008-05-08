@@ -92,6 +92,10 @@ KNOWN PROBLEMS
         problem with working with significant figures when not using
         scientific notation.
 
+LICENSE
+    This script is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
 AUTHOR
     Sullivan Beck (sbeck@cpan.org)
 
