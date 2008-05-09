@@ -21,7 +21,7 @@ use warnings;
 
 %EXPORT_TAGS = (all => \@EXPORT_OK);
 
-$VERSION = 1.07;
+$VERSION = 1.08;
 
 use strict;
 

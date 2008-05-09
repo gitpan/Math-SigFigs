@@ -1,6 +1,6 @@
 ---
 name: Math-SigFigs
-version: 1.07
+version: 1.08
 author:
   - 'Sullivan Beck <sbeck@cpan.org>'
 abstract: do math with correct handling of significant figures
@@ -15,7 +15,7 @@ build_requires:
 provides:
   Math::SigFigs:
     file: lib/Math/SigFigs.pm
-    version: 1.07
+    version: 1.08
 generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
