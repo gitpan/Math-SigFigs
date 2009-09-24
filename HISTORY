@@ -46,5 +46,7 @@ Version 1.08  2008-05-09
    Final changes to meet requirements on http://cpants.perl.org/
    Bug fix so it won't fail with "Too early to specify a build action"
 
-Version 1.09
-
+Version 1.09  2009-09-24
+   FormatSigFigs will preserve a '+' sign.  Denby Angus
+      <support@kisters.com.au>
+   Better handling a value of 0.  Denby Angus <support@kisters.com.au>

@@ -1,27 +1,35 @@
 #!/usr/bin/perl -w
 
-use Math::SigFigs;
+require 5.001;
+
 $runtests=shift(@ARGV);
 if ( -f "t/test.pl" ) {
   require "t/test.pl";
+  $dir="./lib";
+  $tdir="t";
 } elsif ( -f "test.pl" ) {
   require "test.pl";
+  $dir="../lib";
+  $tdir=".";
 } else {
   die "ERROR: cannot find test.pl\n";
 }
+
+unshift(@INC,$dir);
+use Math::SigFigs;
 
 print "Simplify...\n";
 
 $tests="
 
 0.00
-0
+0.00
 
 100
 100
 
 + 100
-100
++100
 
  - 100
 -100

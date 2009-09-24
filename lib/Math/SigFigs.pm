@@ -1,6 +1,6 @@
 package Math::SigFigs;
 
-# Copyright (c) 1995-2008 Sullivan Beck. All rights reserved.
+# Copyright (c) 1995-2009 Sullivan Beck. All rights reserved.
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 
@@ -21,7 +21,7 @@ use warnings;
 
 %EXPORT_TAGS = (all => \@EXPORT_OK);
 
-$VERSION = 1.08;
+$VERSION = 1.09;
 
 use strict;
 
@@ -133,6 +133,7 @@ sub FormatSigFigs {
   $N=~ s/^0+//;                # Remove all leading zeros
   $N=~ s/0+$//  if ($N=~/\./); # Remove all trailing zeros (when decimal point)
   $N=~ s/\.$//;                # Remove a trailing decimal point
+  return "${s}0"  if ($N eq "");
   $N= "0$N"  if ($N=~ /^\./);  # Turn .2 into 0.2
 
   # If $N has fewer sigfigs than requested, pad it with zeros and return it.
@@ -273,8 +274,6 @@ sub _Simplify {
   return undef  if ($n !~ /^\s*([+-]?)\s*0*(\d+\.?\d*)\s*$/  and
                     $n !~ /^\s*([+-]?)\s*0*(\.\d+)\s*$/);
   $n="$1$2";
-  return 0  if ($n==0);
-  $n=~ s/\+//;
   return $n;
 }
 

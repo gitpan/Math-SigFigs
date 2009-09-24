@@ -1,14 +1,22 @@
 #!/usr/bin/perl -w
 
-use Math::SigFigs qw(:all);
+require 5.001;
+
 $runtests=shift(@ARGV);
 if ( -f "t/test.pl" ) {
   require "t/test.pl";
+  $dir="./lib";
+  $tdir="t";
 } elsif ( -f "test.pl" ) {
   require "test.pl";
+  $dir="../lib";
+  $tdir=".";
 } else {
   die "ERROR: cannot find test.pl\n";
 }
+
+unshift(@INC,$dir);
+use Math::SigFigs qw(:all);
 
 print "addSF...\n";
 
